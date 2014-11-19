@@ -21,11 +21,6 @@ Route::get('/', function()
     return View::make('index');
 });
 
-Route::post('/s3_action', function()
-{
-    return View::make('s3_action');
-});
-
 Route::get('/metadata/{path?}', function($path = '')
 {
     return View::make('metadata', array('pwd' => '/'.$path));
