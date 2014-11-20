@@ -31,6 +31,8 @@
     }
     if ($object['ContentLength'] == '0') // If pwd is a folder.
     {
+        if (!endsWith($pwd, '/'))
+            $pwd = $pwd.'/';
         $bucket_objects = $s3client->listObjects(array(
             'Bucket' => $bucket_name,
             'Prefix' => $username.$pwd
