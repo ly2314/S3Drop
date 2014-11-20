@@ -81,7 +81,7 @@
                 'modified' => $object['LastModified'],
                 'path' => $pwd,
                 'mime_type' => $object['ContentType'],
-                'is_dir' => 'true',
+                'is_dir' => true,
                 'Expires' => $object['Expires'],
                 'contents' => $content,
             );
@@ -95,7 +95,7 @@
                 'path' => $pwd,
                 'mime_type' => $object['ContentType'],
                 'Expires' => $object['Expires'],
-                'is_dir' => 'false',
+                'is_dir' => false,
             );
         echo json_encode($response);
     }

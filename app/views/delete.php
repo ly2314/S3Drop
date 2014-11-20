@@ -19,6 +19,9 @@
     {
         App::abort(404, 'File Not Found');
     }
+
+    require_once app_path().'/views/metadata.php';
+    
     if ($object['ContentLength'] == '0') // If pwd is a folder.
     {
         $s3client->deleteMatchingObjects($bucket_name, $username.$pwd, '(.*)', array());
@@ -30,6 +33,4 @@
                 'Key' => $username.$pwd,
             ));
     }
-
-    require_once app_path().'/views/metadata.php';
 ?>

@@ -58,6 +58,10 @@ APIs:
   * POST
   * Share and get public download link of the file.
 
+- /unshare/{path}
+  * POST
+  * Unshare a file
+
 - /thumbnails/{path?}
   * GET
   * Get the thumbnail image of a video file.

@@ -26,7 +26,7 @@ Route::get('/metadata/{path?}', function($path = '')
     return View::make('metadata', array('pwd' => '/'.$path));
 })->where('path', '(.*)');
 
-Route::post('fileops/delete/', function()
+Route::post('/fileops/delete/', function()
 {
     if (Input::has('path'))
     {
@@ -113,3 +113,8 @@ Route::post('/new_user', function()
     }
     App::abort(400, 'Required Filed Missing');
 });
+
+Route::post('/unshare/{path?}', function($path = '')
+{
+    return View::make('unshare', array('pwd' => '/'.$path));
+})->where('path', '(.*)');

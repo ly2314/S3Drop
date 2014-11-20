@@ -8,8 +8,8 @@
         'services' => array(
             'default_settings' => array(
                 'params' => array(
-                    'key'    => 'AKIAIC6EZIOZJANYBMSQ',
-                    'secret' => '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 ',
+                    'key'    => 'AKIAJFDK5BTK3FLECWPA',
+                    'secret' => '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',
                 )
             )
         ));
