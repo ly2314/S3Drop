@@ -71,7 +71,7 @@ Route::post('/fileops/create_folder', function()
 {
     if (Input::has('path'))
     {
-        return View::make('mkdir', array('pwd' => Input::get('path')));
+        return View::make('mkdir', array('pwd' => '/'.Input::get('path')));
     }
     App::abort(400, 'Required Filed Missing');
 });
