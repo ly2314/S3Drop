@@ -14,6 +14,7 @@
             'Key'          => $username.$pwd,
             'Body'         => $content,
             'Expires'      => $expires,
+            'ContentType'  => Request::header('Content-Type')
         ));
     }
     else
@@ -22,6 +23,7 @@
             'Bucket'       => $bucket_name,
             'Key'          => $username.$pwd,
             'Body'         => $content,
+            'ContentType'  => Request::header('Content-Type')
         ));
     }
 
