@@ -7,11 +7,13 @@
 
     // Get object metadata.
     $object = '';
+    $temp = tempnam(sys_get_temp_dir(), 's3d');
     try
     {
         $object = $s3client->getObject(array(
                 'Bucket' => $bucket_name,
                 'Key' => $username.$pwd,
+                'SaveAs' => $temp
             ));
     }
     catch(Exception $ex)
@@ -39,8 +41,9 @@
     else // If pwd is not a folder.
     {
         $file = substr($pwd, strrpos($pwd, '/') + 1);
-        header('Content-Type:'.$object["ContentType"]);
+        header('Content-Type: '.$object['ContentType']);
         header('Content-Disposition: attachment; filename='.$file);
-        echo $object['Body'];
+        header('Content-Length: ' . filesize($temp));
+        readfile($temp);
     }
 ?>
