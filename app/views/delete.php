@@ -6,7 +6,6 @@
     require_once app_path().'/views/common/form_validator.php';
 
     // Get object metadata.
-    $is_dir = false;
     $object = '';
     try
     {
@@ -22,7 +21,7 @@
 
     require_once app_path().'/views/metadata.php';
     
-    if ($object['ContentLength'] == '0') // If pwd is a folder.
+    if (endsWith($username.$pwd, '/')) // If pwd is a folder.
     {
         $s3client->deleteMatchingObjects($bucket_name, $username.$pwd, '(.*)', array());
     }

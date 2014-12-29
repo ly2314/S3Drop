@@ -29,9 +29,15 @@ Route::get('/metadata/{path?}', function($path = '')
 
 Route::post('/fileops/delete/', function()
 {
-    $pwd = '/'.$path;
-    require_once app_path().'/views/delete.php';
-    App::abort(400, 'Required Filed Missing');
+    if (Input::has('path'))
+    {
+        $pwd = Input::get('path');
+        require_once app_path().'/views/delete.php';
+    }
+    else
+    {
+        App::abort(400, 'Required Filed Missing');
+    }
 });
 
 Route::post('/files_put/{path?}', function($path = '')
@@ -63,7 +69,10 @@ Route::post('/fileops/copy', function()
         $from = Input::get('from_path');
         require_once app_path().'/views/copy.php';
     }
-    App::abort(400, 'Required Filed Missing');
+    else
+    {
+        App::abort(400, 'Required Filed Missing');
+    }
 });
 
 Route::post('/fileops/move', function()
@@ -74,17 +83,23 @@ Route::post('/fileops/move', function()
         $from = Input::get('from_path');
         require_once app_path().'/views/move.php';
     }
-    App::abort(400, 'Required Filed Missing');
+    else
+    {
+        App::abort(400, 'Required Filed Missing');
+    }
 });
 
 Route::post('/fileops/create_folder', function()
 {
     if (Input::has('path'))
     {
-        $pwd = '/'.Input::get('path');
+        $pwd = Input::get('path');
         require_once app_path().'/views/mkdir.php';
     }
-    App::abort(400, 'Required Filed Missing');
+    else
+    {
+        App::abort(400, 'Required Filed Missing');
+    }
 });
 
 Route::match(array('GET', 'POST'), '/search/{path?}', function($path = '')
@@ -95,7 +110,10 @@ Route::match(array('GET', 'POST'), '/search/{path?}', function($path = '')
         $query = Input::get('query');
         require_once app_path().'views/search.php';
     }
-    App::abort(400, 'Required Filed Missing');
+    else
+    {
+        App::abort(400, 'Required Filed Missing');
+    }
 });
 
 Route::post('/disable_access_token', function()
@@ -127,7 +145,10 @@ Route::post('/new_user', function()
         $username = $username;
         require_once app_path().'/views/new_user.php';
     }
-    App::abort(400, 'Required Filed Missing');
+    else
+    {
+        App::abort(400, 'Required Filed Missing');
+    }
 });
 
 Route::post('/unshare/{path?}', function($path = '')

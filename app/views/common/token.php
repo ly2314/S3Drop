@@ -7,7 +7,8 @@
     function getUsername($token)
     {
         include(app_path().'/views/common/config.php');
-        $response = file_get_contents($token_server.'show_profile?access_token='.$token);
+        // $response = file_get_contents($token_server.'show_profile?access_token='.$token);
+        $response = file_get_contents($token_server.$token);
         if($response === false)
         {
             return NULL;
@@ -17,12 +18,13 @@
             $response = json_decode($response, true);
             return $response['name'];
         }
+        //return 'ly2314';
     }
 
     function checkToken($token)
     {
         include(app_path().'/views/common/config.php');
-        $response = file_get_contents($token_server.'show_profile?access_token='.$token);
+        $response = file_get_contents($token_server.$token);
         if($response === false)
         {
             return false;
@@ -31,6 +33,7 @@
         {
             return true;
         }
+        //return true;
     }
 
     function getUserInfo($token)

@@ -7,5 +7,6 @@
     $config_BUCKET03 = 'sylab-s3drop-03';
     $config_BUCKET30 = 'sylab-s3drop-30';
     $ffmpeg_path = 'C:\ffmpeg\bin\ffmpeg.exe';
-    $token_server = 'http://140.116.221.81/Oauth/public/index.php/';
+    $token_server = 'https://oauth.ly2314.cc/accounts/token/';
+    //$token_server = 'http://140.116.221.81/Oauth/public/index.php/';
 ?>

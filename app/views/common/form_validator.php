@@ -70,6 +70,21 @@
     if (checkToken($token) == true)
     {
         $username = getUsername($token);
+        try
+        {
+            $object = $s3client->getObject(array(
+                    'Bucket' => $bucket_name,
+                    'Key' => $username.'/',
+                ));
+        }
+        catch (Exception $ex)
+        {
+            $result = $s3client->putObject(array(
+                    'Bucket'       => $bucket_name,
+                    'Key'          => $username.'/',
+                    'Body'         => '',
+                ));
+        }
     }
     else
     {

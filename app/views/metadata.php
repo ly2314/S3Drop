@@ -29,7 +29,7 @@
             App::abort(404, 'File Not Found');
         }
     }
-    if ($object['ContentLength'] == '0') // If pwd is a folder.
+    if (endsWith($pwd, '/')) // If pwd is a folder.
     {
         if (!endsWith($pwd, '/'))
             $pwd = $pwd.'/';
@@ -38,43 +38,46 @@
             'Prefix' => $username.$pwd
         ));
         $content = array();
-        foreach ($bucket_objects['Contents'] as $bobject)
+        if (isset($bucket_objects['Contents']))
         {
-            $fld = substr($bobject['Key'], strlen($username.$pwd));
-            if (substr_count($fld, '/') < 1 || (substr_count($fld, '/') == 1 && endsWith($bobject['Key'], '/')))
+            foreach ($bucket_objects['Contents'] as $bobject)
             {
-                if (endsWith($bobject['Key'], '/'))
+                $fld = substr($bobject['Key'], strlen($username.$pwd));
+                if (substr_count($fld, '/') < 1 || (substr_count($fld, '/') == 1 && endsWith($bobject['Key'], '/')))
                 {
-                    if (substr($bobject['Key'], strpos($bobject['Key'], $username) + strlen($username)) != $pwd)
+                    if (endsWith($bobject['Key'], '/'))
+                    {
+                        if (substr($bobject['Key'], strpos($bobject['Key'], $username) + strlen($username)) != $pwd)
+                        {
+                            $item_data = getItemMetadata($s3client, $bucket_name, $bobject['Key']);
+                            $item = array(
+                                    'bytes' => $bobject['Size'],
+                                    'modified' => $bobject['LastModified'],
+                                    'path' => substr($bobject['Key'], strpos($bobject['Key'], $username) + strlen($username)),
+                                    'mime_type' => $item_data['ContentType'],
+                                    'Expires' => $object['Expires'],
+                                    'is_dir' => 'true',
+                                );
+                            array_push($content, $item);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
                     {
                         $item_data = getItemMetadata($s3client, $bucket_name, $bobject['Key']);
                         $item = array(
                                 'bytes' => $bobject['Size'],
                                 'modified' => $bobject['LastModified'],
-                                'path' => substr($bobject['Key'], strpos($bobject['Key'], $username) + strlen($username)),
+                                'path' => substr($bobject['Key'], strpos($bobject['Key'], $username.$pwd) + strlen($username)),
                                 'mime_type' => $item_data['ContentType'],
                                 'Expires' => $object['Expires'],
-                                'is_dir' => 'true',
+                                'is_dir' => 'false',
                             );
                         array_push($content, $item);
                     }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    $item_data = getItemMetadata($s3client, $bucket_name, $bobject['Key']);
-                    $item = array(
-                            'bytes' => $bobject['Size'],
-                            'modified' => $bobject['LastModified'],
-                            'path' => substr($bobject['Key'], strpos($bobject['Key'], $username.$pwd) + strlen($username)),
-                            'mime_type' => $item_data['ContentType'],
-                            'Expires' => $object['Expires'],
-                            'is_dir' => 'false',
-                        );
-                    array_push($content, $item);
                 }
             }
         }

@@ -423,7 +423,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.2.11';
+    const VERSION = '4.2.12';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -1446,7 +1446,16 @@ class Request
     }
     public function get($key, $default = null, $deep = false)
     {
-        return $this->query->get($key, $this->attributes->get($key, $this->request->get($key, $default, $deep), $deep), $deep);
+        if ($this !== ($result = $this->query->get($key, $this, $deep))) {
+            return $result;
+        }
+        if ($this !== ($result = $this->attributes->get($key, $this, $deep))) {
+            return $result;
+        }
+        if ($this !== ($result = $this->request->get($key, $this, $deep))) {
+            return $result;
+        }
+        return $default;
     }
     public function getSession()
     {
@@ -2830,7 +2839,7 @@ class ExceptionHandler
                 }
             } catch (\Exception $e) {
                 if ($this->debug) {
-                    $title = sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage());
+                    $title = sprintf('Exception thrown when handling an exception (%s: %s)', get_class($e), $e->getMessage());
                 } else {
                     $title = 'Whoops, looks like something went wrong.';
                 }
@@ -3996,7 +4005,7 @@ class FileLoader implements LoaderInterface
         }
         $file = "{$path}/{$group}.php";
         if ($this->files->exists($file)) {
-            $items = $this->files->getRequire($file);
+            $items = $this->getRequire($file);
         }
         $file = "{$path}/{$environment}/{$group}.php";
         if ($this->files->exists($file)) {
@@ -4006,7 +4015,7 @@ class FileLoader implements LoaderInterface
     }
     protected function mergeEnvironment(array $items, $file)
     {
-        return array_replace_recursive($items, $this->files->getRequire($file));
+        return array_replace_recursive($items, $this->getRequire($file));
     }
     public function exists($group, $namespace = null)
     {
@@ -5521,8 +5530,10 @@ class Route
     }
     protected function addFilters($type, $filters)
     {
+        $filters = static::explodeFilters($filters);
         if (isset($this->action[$type])) {
-            $this->action[$type] .= '|' . $filters;
+            $existing = static::explodeFilters($this->action[$type]);
+            $this->action[$type] = array_merge($existing, $filters);
         } else {
             $this->action[$type] = $filters;
         }
@@ -7160,6 +7171,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             if (isset($relation) || is_null($value)) {
                 $attributes[$key] = $relation;
             }
+            unset($relation);
         }
         return $attributes;
     }
@@ -8504,7 +8516,7 @@ class LogServiceProvider extends ServiceProvider
     }
     public function provides()
     {
-        return array('log');
+        return array('log', 'Psr\\Log\\LoggerInterface');
     }
 }
 namespace Illuminate\Log;

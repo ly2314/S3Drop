@@ -1130,6 +1130,7 @@ return array(
     'Symfony\\Component\\Filesystem\\Exception\\IOException' => $vendorDir . '/symfony/filesystem/Symfony/Component/Filesystem/Exception/IOException.php',
     'Symfony\\Component\\Filesystem\\Exception\\IOExceptionInterface' => $vendorDir . '/symfony/filesystem/Symfony/Component/Filesystem/Exception/IOExceptionInterface.php',
     'Symfony\\Component\\Filesystem\\Filesystem' => $vendorDir . '/symfony/filesystem/Symfony/Component/Filesystem/Filesystem.php',
+    'Symfony\\Component\\Filesystem\\LockHandler' => $vendorDir . '/symfony/filesystem/Symfony/Component/Filesystem/LockHandler.php',
     'Symfony\\Component\\Filesystem\\Tests\\FilesystemTestCase' => $vendorDir . '/symfony/filesystem/Symfony/Component/Filesystem/Tests/FilesystemTestCase.php',
     'Symfony\\Component\\Finder\\Adapter\\AbstractAdapter' => $vendorDir . '/symfony/finder/Symfony/Component/Finder/Adapter/AbstractAdapter.php',
     'Symfony\\Component\\Finder\\Adapter\\AbstractFindAdapter' => $vendorDir . '/symfony/finder/Symfony/Component/Finder/Adapter/AbstractFindAdapter.php',
